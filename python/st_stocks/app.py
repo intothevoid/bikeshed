@@ -6,6 +6,7 @@ import yfinance as yf
 TICKERS = ['TSLA', 'AMD', 'AAPL', 'FB']
 
 
+@st.cache
 def get_data():
     stock_data = pd.DataFrame()
     for ticker in TICKERS:
@@ -56,7 +57,7 @@ def main():
     )
 
     if not selected_tickers:
-        st.error("You need to select atleast one ticker to plot:")
+        st.error("You need to select atleast one ticker to plot")
     else:
         fig = get_plot_figure(get_plotting_data(stock_data, selected_tickers))
         st.pyplot()
