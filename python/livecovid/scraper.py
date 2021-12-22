@@ -37,7 +37,7 @@ class CovidScraper:
         except Exception as exc:
             retval["exception"] = exc
 
-        return retval
+        return json.loads(retval)
 
     def _get_payload(self, rsp):
         payload = {}
