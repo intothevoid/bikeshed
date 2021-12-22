@@ -12,10 +12,12 @@
   </head>
   <body>
     <div class="container"><h1>Appa's Covid Watch</h1></div>
+
     <div class="container" style="text-align: center">
       <div class="container-small">
         <img id="appa-image" src="static/appa.JPG" alt="Appa Face" />
       </div>
+
       <p>Appa eej watch the Covid so you eej don't have to watch the Covid.</p>
       <button id="saBtn">SA</button>
       <button id="waBtn">WA</button>
@@ -25,14 +27,18 @@
       <button id="actBtn">ACT</button>
       <button id="tasBtn">TAS</button>
       <h4 id="stateName"></h4>
-      <table class="striped-table" id="numbersTable">
-        <thead>
-          <tr>
-            <th id="dateLabel"></th>
-            <th id="numbersLabel"></th>
-          </tr>
-        </thead>
-      </table>
+
+      <div class="container-small">
+        <table class="striped-table" id="numbersTable">
+          <thead>
+            <tr>
+              <th id="dateLabel"></th>
+              <th id="numbersLabel"></th>
+            </tr>
+          </thead>
+          <tbody id="numbersTableBody"></tbody>
+        </table>
+      </div>
     </div>
 
     <script src="static/index.js"></script>

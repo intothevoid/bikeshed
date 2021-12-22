@@ -12,6 +12,7 @@ let ntEl = document.getElementById("ntBtn");
 let actEl = document.getElementById("actBtn");
 
 let numbersTableEl = document.getElementById("numbersTable");
+let numbersTableBodyEl = document.getElementById("numbersTableBody");
 let dateLabelEl = document.getElementById("dateLabel");
 let numbersLabelEl = document.getElementById("numbersLabel");
 let stateNameEl = document.getElementById("stateName");
@@ -88,9 +89,9 @@ async function loadNumbers(state) {
 }
 
 function populateNumbersTable(respObject) {
-  // clear table
-  numbersTableEl.innerText = "";
-  numbersTableEl.innerHTML = "";
+  // clear table body
+  numbersTableBodyEl.innerText = "";
+  numbersTableBodyEl.innerHTML = "";
 
   // set the state name from response
   const stateName = respObject["state"];
@@ -110,6 +111,6 @@ function populateNumbersTable(respObject) {
 
     row.append(dateEl);
     row.append(numberEl);
-    numbersTableEl.appendChild(row);
+    numbersTableBodyEl.appendChild(row);
   }
 }
