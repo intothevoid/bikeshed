@@ -1,5 +1,5 @@
+from scrapers.covid import CovidScraper
 from fastapi import FastAPI
-from scraper import CovidScraper
 
 app = FastAPI()
 covscrape = CovidScraper()

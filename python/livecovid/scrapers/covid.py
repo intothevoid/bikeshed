@@ -50,8 +50,3 @@ class CovidScraper:
             payload[item[0].text] = item[1].text
 
         return payload
-
-
-if __name__ == "__main__":
-    cs = CovidScraper()
-    print(cs.get_covid_numbers("sa"))
