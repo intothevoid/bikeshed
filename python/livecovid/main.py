@@ -7,10 +7,12 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 covscrape = CovidScraper()
 
-@app.get('/numbers/{state}')
+
+@app.get("/numbers/{state}")
 async def get_numbers(state):
     return covscrape.get_covid_numbers(state)
 
-@app.get('/')
+
+@app.get("/")
 async def get_root():
-    return FileResponse('index.html')
+    return FileResponse("index.html")

@@ -11,8 +11,8 @@
     <title>Appa's Covid Watch</title>
   </head>
   <body>
+    <div class="container"><h1>Appa's Covid Watch</h1></div>
     <div class="container" style="text-align: center">
-      <h1>Appa's Covid Watch</h1>
       <div class="container-small">
         <img id="appa-image" src="static/appa.JPG" alt="Appa Face" />
       </div>
@@ -24,6 +24,15 @@
       <button id="ntBtn">NT</button>
       <button id="actBtn">ACT</button>
       <button id="tasBtn">TAS</button>
+      <h4 id="stateName"></h4>
+      <table class="striped-table" id="numbersTable">
+        <thead>
+          <tr>
+            <th id="dateLabel"></th>
+            <th id="numbersLabel"></th>
+          </tr>
+        </thead>
+      </table>
     </div>
 
     <script src="static/index.js"></script>
