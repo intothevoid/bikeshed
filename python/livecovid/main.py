@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from scraper import CovidScraper
 
-app = FastAPI(__name__)
+app = FastAPI()
 covscrape = CovidScraper()
 
 @app.get('/numbers/{state}')
