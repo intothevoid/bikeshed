@@ -29,7 +29,7 @@ class CovidScraper:
             retval["meta"] = meta
 
             if resp.status_code != 200:
-                return json.loads(retval)
+                return retval
 
             # Extract numbers
             retval["payload"] = self._get_payload(resp)
@@ -37,7 +37,7 @@ class CovidScraper:
         except Exception as exc:
             retval["exception"] = exc
 
-        return json.loads(retval)
+        return retval
 
     def _get_payload(self, rsp):
         payload = {}
