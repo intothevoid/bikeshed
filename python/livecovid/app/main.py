@@ -17,9 +17,6 @@ async def get_numbers(state):
 
 @app.get("/")
 async def get_root():
-    return FileResponse("index.html")
+    return FileResponse("app/index.html")
 
 
-if __name__ == "__main__":
-    portno = os.environ.get('PORT') or 8000
-    uvicorn.run(app, port=portno, host="0.0.0.0")
