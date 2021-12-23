@@ -1,3 +1,4 @@
+import os
 from scrapers.covid import CovidScraper
 from fastapi import FastAPI
 from starlette.responses import FileResponse
@@ -20,4 +21,5 @@ async def get_root():
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, port=8081, host="0.0.0.0")
+    portno = os.environ.get('PORT') or 8000
+    uvicorn.run(app, port=portno, host="0.0.0.0")
