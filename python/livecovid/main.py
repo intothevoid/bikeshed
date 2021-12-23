@@ -2,6 +2,7 @@ from scrapers.covid import CovidScraper
 from fastapi import FastAPI
 from starlette.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+import uvicorn
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -16,3 +17,7 @@ async def get_numbers(state):
 @app.get("/")
 async def get_root():
     return FileResponse("index.html")
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, port=8081, host="0.0.0.0")

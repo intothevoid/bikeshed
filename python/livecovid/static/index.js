@@ -97,7 +97,7 @@ function populateNumbersTable(respObject) {
   const stateName = respObject["state"];
   stateNameEl.innerText = stateName;
   dateLabelEl.innerText = "Date";
-  numbersLabelEl.innerText = "Numbers";
+  numbersLabelEl.innerText = "New Cases";
 
   const payload = respObject["payload"];
 
