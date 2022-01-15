@@ -1,5 +1,5 @@
 <div style="padding: 10px">
-  <mat-spinner *ngIf="products.length === 0"></mat-spinner>
+  <mat-spinner *ngIf="products?.length === 0"></mat-spinner>
   <mat-card *ngFor="let product of products" style="margin-top: 10px">
     <mat-card-header>
       <mat-card-title>#{{ product.id }} {{ product.name }}</mat-card-title>

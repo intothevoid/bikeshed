@@ -6,6 +6,7 @@ import {
 } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { retry, catchError, tap } from 'rxjs';
+import { Product } from './product';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,7 @@ export class DataService {
 
   public sendGetRequest() {
     return this.httpClient
-      .get(this.REST_API_SERVER, {
+      .get<Product[]>(this.REST_API_SERVER, {
         params: new HttpParams({ fromString: '_page=1&_limit=20' }),
         observe: 'response',
       })
@@ -36,7 +37,7 @@ export class DataService {
   }
 
   public sendGetRequestToUrl(url: string) {
-    return this.httpClient.get(url, { observe: 'response' }).pipe(
+    return this.httpClient.get<Product[]>(url, { observe: 'response' }).pipe(
       retry(3),
       catchError(this.handleError),
       tap((res) => {
