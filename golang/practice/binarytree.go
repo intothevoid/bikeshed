@@ -11,6 +11,32 @@ func Walker(t *tree.Tree, ch chan int) {
 	close(ch)
 }
 
+// More elegant way to walk a binary tree using closures
+func WalkClosure(t *tree.Tree, ch chan int) {
+	defer close(ch)
+	var walk func(t *tree.Tree)
+
+	walk = func(t *tree.Tree) {
+		if t == nil {
+			return
+		}
+
+		if t.Left != nil {
+			Walk(t.Left, ch)
+		} else {
+			ch <- t.Value
+		}
+
+		if t.Right != nil {
+			Walk(t.Right, ch)
+		} else {
+
+			ch <- t.Value
+		}
+	}
+	walk(t)
+}
+
 // Walk walks the tree t sending all values
 // from the tree to the channel ch.
 func Walk(t *tree.Tree, ch chan int) {
