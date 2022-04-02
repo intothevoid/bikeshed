@@ -111,9 +111,6 @@ class SpotipyWrapper:
             # add the playlist to the list
             playlist_dict_parent[playlist["name"]] = playlist_dict
 
-            if len(playlist_dict_parent) > 2:
-                break
-
         # return the list of playlists
         self.playlist_store["playlists"] = playlist_dict_parent
 

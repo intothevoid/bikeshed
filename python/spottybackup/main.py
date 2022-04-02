@@ -4,11 +4,14 @@ from logger import LOGGER, configure_logging
 
 # backup spotify playlists
 def backup_spotify_playlists(username):
-    LOGGER.info("Backup spotify playlists")
-    sw = SpotipyWrapper(username)
-    sw.init_credential_manager()
-    sw.create_playlist_store()
-    sw.write_playlist_store()
+    try:
+        LOGGER.info("Backup spotify playlists")
+        sw = SpotipyWrapper(username)
+        sw.init_credential_manager()
+        sw.create_playlist_store()
+        sw.write_playlist_store()
+    except Exception as exc:
+        LOGGER.error(f"Error backing up playlists: {exc}")
 
 
 # restore spotify playlists
