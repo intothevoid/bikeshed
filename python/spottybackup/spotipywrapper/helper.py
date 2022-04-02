@@ -37,7 +37,7 @@ class SpotipyWrapper:
     def get_playlists(self):
         # get user's playlists
         LOGGER.debug("Getting user's playlists")
-        playlists = self.sp.user_playlists(self.username)
+        playlists = self.sp.user_playlists(self.username, limit=50)
 
         return playlists["items"]
 
