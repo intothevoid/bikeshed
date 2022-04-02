@@ -111,8 +111,20 @@ class SpotipyWrapper:
             # add the playlist to the list
             playlist_dict_parent[playlist["name"]] = playlist_dict
 
+            if len(playlist_dict_parent) > 2:
+                break
+
         # return the list of playlists
         self.playlist_store["playlists"] = playlist_dict_parent
+
+    # function to accept a path and archive the folder
+    def archive_playlist_store(self, path):
+        # get the username and creation date
+        username = self.playlist_store["username"]
+        creation_date = self.playlist_store["creation_date"]
+
+        # archive the folder
+        os.system(f"tar -cvf {username}_{creation_date}.tar.gz ./{path}")
 
     # accept json dictionary and write to file
     def write_playlist_store(self):
@@ -126,6 +138,12 @@ class SpotipyWrapper:
         for pname, playlist in self.playlist_store["playlists"].items():
             with open(f"{username}_{creation_date}/{pname}.json", "w") as f:
                 json.dump(playlist, f)
+
+        # create an archive of downloaded playlists
+        self.archive_playlist_store(f"{username}_{creation_date}")
+
+        # delete original folder
+        os.system(f"rm -rf {username}_{creation_date}")
 
     # read from file and display the playlists
     def read_playlist_store(self):
