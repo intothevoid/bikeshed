@@ -9,10 +9,22 @@ class TodoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Todo List',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Todo List'),
-        ),
+      home: TodoList(),
+    );
+  }
+}
+
+class TodoList extends StatefulWidget {
+  @override
+  createState() => TodoListState();
+}
+
+class TodoListState extends State<TodoList> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Todo List"),
       ),
     );
   }
