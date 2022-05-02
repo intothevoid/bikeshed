@@ -18,6 +18,36 @@ class TodoListState extends State<TodoList> {
     });
   }
 
+  // remove item
+  void _removeTodoItem(int index) {
+    setState(() {
+      _todoItems.removeAt(index);
+    });
+  }
+
+  // Show a dialog to confirm user wants to remove item
+  void _promptRemoveTodoItem(int index) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Mark "${_todoItems[index]}" as done?'),
+            actions: <Widget>[
+              TextButton(
+                  child: Text('MARK AS DONE'),
+                  onPressed: () {
+                    _removeTodoItem(index);
+                    Navigator.of(context).pop();
+                  }),
+              TextButton(
+                child: Text("CANCEL"),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ],
+          );
+        });
+  }
+
   // Push add item page on navigation stack
   void _pushAddTodoScreen() {
     Navigator.of(context).push(
@@ -46,7 +76,7 @@ class TodoListState extends State<TodoList> {
   Widget _buildTodoList() {
     return ListView.builder(itemBuilder: (context, index) {
       if (index < _todoItems.length) {
-        return _buildTodoItem(_todoItems[index]);
+        return _buildTodoItem(_todoItems[index], index);
       } else {
         return const ListTile();
       }
@@ -54,9 +84,10 @@ class TodoListState extends State<TodoList> {
   }
 
   // Build a list item
-  Widget _buildTodoItem(String todoText) {
+  Widget _buildTodoItem(String todoText, int index) {
     return ListTile(
       title: Text(todoText),
+      onTap: () => _promptRemoveTodoItem(index),
     );
   }
 
