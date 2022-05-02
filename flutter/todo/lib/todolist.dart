@@ -1,6 +1,9 @@
 import "package:flutter/material.dart";
+import "package:shared_preferences/shared_preferences.dart";
 
 class TodoList extends StatefulWidget {
+  const TodoList({Key? key}) : super(key: key);
+
   @override
   createState() => TodoListState();
 }
@@ -8,12 +11,20 @@ class TodoList extends StatefulWidget {
 class TodoListState extends State<TodoList> {
   final List<String> _todoItems = [];
 
+  void _saveItems() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setStringList("items", _todoItems);
+  }
+
   // this will be called each time the + button is pressed
   void _addTodoItem(String item) {
     setState(() {
       // add if item is non null
       if (item.isNotEmpty) {
         _todoItems.add(item);
+
+        // persistent storage
+        _saveItems();
       }
     });
   }
@@ -22,6 +33,9 @@ class TodoListState extends State<TodoList> {
   void _removeTodoItem(int index) {
     setState(() {
       _todoItems.removeAt(index);
+
+      // persistent storage
+      _saveItems();
     });
   }
 
@@ -34,13 +48,13 @@ class TodoListState extends State<TodoList> {
             title: Text('Mark "${_todoItems[index]}" as done?'),
             actions: <Widget>[
               TextButton(
-                  child: Text('MARK AS DONE'),
+                  child: const Text('MARK AS DONE'),
                   onPressed: () {
                     _removeTodoItem(index);
                     Navigator.of(context).pop();
                   }),
               TextButton(
-                child: Text("CANCEL"),
+                child: const Text("CANCEL"),
                 onPressed: () => Navigator.of(context).pop(),
               )
             ],
@@ -101,7 +115,7 @@ class TodoListState extends State<TodoList> {
       floatingActionButton: FloatingActionButton(
         onPressed: _pushAddTodoScreen,
         tooltip: "Add Task",
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
