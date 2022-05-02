@@ -2,6 +2,8 @@
 
 A simple Todo app that can create a list of items to be done.
 
+![Todo List](https://github.com/intothevoid/bikeshed/raw/master/flutter/todo/sshot.jpeg "Todo List")
+
 ## Features
 * Add items to do
 * Mark items as done
