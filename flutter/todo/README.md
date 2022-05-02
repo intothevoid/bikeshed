@@ -1,10 +1,13 @@
-# todo
+# Todo List
 
-A new Flutter project.
+A simple Todo app that can create a list of items to be done.
 
-## Getting Started
+## Features
+* Add items to do
+* Mark items as done
+* Written in Flutter, should be easy to build as a native Android or iOS app
 
-This project is a starting point for a Flutter application.
+## Flutter is awesome!
 
 A few resources to get you started if this is your first Flutter project:
 
