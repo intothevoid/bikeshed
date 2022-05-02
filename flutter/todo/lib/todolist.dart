@@ -6,14 +6,40 @@ class TodoList extends StatefulWidget {
 }
 
 class TodoListState extends State<TodoList> {
-  List<String> _todoItems = [];
+  final List<String> _todoItems = [];
 
   // this will be called each time the + button is pressed
-  void _addTodoItem() {
+  void _addTodoItem(String item) {
     setState(() {
-      int index = _todoItems.length;
-      _todoItems.add('Item ' + index.toString());
+      // add if item is non null
+      if (item.isNotEmpty) {
+        _todoItems.add(item);
+      }
     });
+  }
+
+  // Push add item page on navigation stack
+  void _pushAddTodoScreen() {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text("Add a new task"),
+          ),
+          body: TextField(
+            autofocus: true,
+            onSubmitted: (val) {
+              _addTodoItem(val);
+              Navigator.pop(context);
+            },
+            decoration: const InputDecoration(
+              hintText: "Enter something todo...",
+              contentPadding: EdgeInsets.all(16.0),
+            ),
+          ),
+        );
+      }),
+    );
   }
 
   // Build the whole list of todo items
@@ -42,7 +68,7 @@ class TodoListState extends State<TodoList> {
       ),
       body: _buildTodoList(),
       floatingActionButton: FloatingActionButton(
-        onPressed: _addTodoItem,
+        onPressed: _pushAddTodoScreen,
         tooltip: "Add Task",
         child: Icon(Icons.add),
       ),
