@@ -1,2 +1,2 @@
 # bikeshed
-A place to put everything which doesn't belong elsewhere
+My personal code dump. Projects not big enough to have their own repository.
