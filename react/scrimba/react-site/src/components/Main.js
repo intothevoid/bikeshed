@@ -1,4 +1,5 @@
 import React from "react";
+import reactbg from "../images/react-bg.png"
 
 
 function Main() {
