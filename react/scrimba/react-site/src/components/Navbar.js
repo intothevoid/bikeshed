@@ -5,8 +5,8 @@ function NavBar() {
     return (
       <div className="navbar">
         <img src={logo} className="navlogo" alt="react-logo"></img>
-        <h3>ReactFacts</h3>
-        <h4>React Course - Project 1</h4>
+        <h3 className="navbar-logotext">ReactFacts</h3>
+        <h4 className="navbar-label">React Course - Project 1</h4>
       </div>
     );
 }

@@ -4,6 +4,7 @@
 
 body {
     margin: 0;
+    background-color: #282D35;
 }
 
 .navbar {
@@ -16,17 +17,20 @@ body {
     padding: 31px 26px;
 }
 
-.navbar > h3, .navbar > h4 {
+.navbar-logotext, .navbar-label {
     margin: 0;
 }
 
-.navbar > h3 {
+.navbar-logotext {
     color: #61DAFB;
     margin-right: auto;
+    font-weight: 700;
+    font-size: 22px;
 }
 
-.navbar > h4 {
+.navbar-label {
     color: #FFFFFF;
+    font-weight: 600;
 }
 
 .navlogo {
@@ -35,12 +39,30 @@ body {
 }
 
 .main {
-    background-color: #33373E;
     font-family: Inter;
     color: #FFFFFF;
     display: flex;
+    flex-direction: column;
+    padding: 55px 27px;
 }
 
-.main > h1 {
-    padding: 31px 26px;
+.main-heading {
+    margin: 0;
+    font-size: 39px;
+    letter-spacing: -0.05em;
+}
+
+.main-list {
+    margin-top: 46px;
+    max-width: 400px;
+}
+
+.main-list > li {
+    line-height: 19px;
+    padding-block: 10px;
+}
+
+.main-list > li::marker {
+    color: #61DAFB;
+    font-size: 1.5rem;
 }
