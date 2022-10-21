@@ -3,7 +3,9 @@
 This project is an exercise completed as part of the free React course at www.scrimba.com
 
 Completed web app looks like -
+<p>
 <img src="https://github.com/intothevoid/bikeshed/blob/master/react/scrimba/react-site/src/images/sshot.png" width="50%" height="50%" alt="screenshot"></img>
+<p>
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
