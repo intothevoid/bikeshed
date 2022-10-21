@@ -1,0 +1,17 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+.navbar {
+    background-color: #21222A;
+    font-family: Inter;
+}
+
+.main {
+    background-color: #33373E;
+    font-family: Inter;
+}
