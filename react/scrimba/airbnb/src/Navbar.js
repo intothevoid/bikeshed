@@ -3,10 +3,9 @@ import './Navbar.css';
 
 function Navbar() {
   return (
-    <div className='navbar'>
+    <nav className='navbar'>
       <img className="navbar-logo" src={logo} alt='logo'></img>
-      <h3>airbnb</h3>
-    </div>
+    </nav>
   );
 }
 

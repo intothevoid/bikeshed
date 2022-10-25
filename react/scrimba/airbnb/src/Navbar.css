@@ -1,15 +1,18 @@
-.navbar {
-    display: flex;
+* {
+  box-sizing: border-box;
 }
 
-.navbar > h3 {
-    color: #FF5A5F;
+body {
+  margin: 0;
+}
+.navbar {
+    height: 70px;
+    display: flex;
+    padding: 10px 36px;
+    box-shadow: 0px 2.98256px 7.4564px rgba(0, 0, 0, 0.1);
+
 }
 
 .navbar-logo {
-    margin-top: 22px;
-    margin-left: 26px;
-    margin-right: 10px;
-    width: 26px; 
-    height: 26px;
+    max-width: 100px;
 }
