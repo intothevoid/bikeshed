@@ -1,0 +1,15 @@
+.navbar {
+    display: flex;
+}
+
+.navbar > h3 {
+    color: #FF5A5F;
+}
+
+.navbar-logo {
+    margin-top: 22px;
+    margin-left: 26px;
+    margin-right: 10px;
+    width: 26px; 
+    height: 26px;
+}
