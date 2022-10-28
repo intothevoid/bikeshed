@@ -9,6 +9,7 @@ body {
 .card-item {
     display: flex;
     flex-direction: column;
+    margin-right: 18px;
 }
 
 .card-item-image {
@@ -74,4 +75,5 @@ body {
 .card {
     padding-left: 37px;
     padding-top: 49px;
+    display: flex;
 }
