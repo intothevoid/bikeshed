@@ -2,7 +2,7 @@
 
 Travel Blog is a travel blog, part of the challenge exercises of the Scrimba React Course.
 
-<img src="./travel-blog-sshot" alt="screenshot"></img>
+<img src="https://raw.githubusercontent.com/intothevoid/bikeshed/master/react/scrimba/travel-blog/public/travel-blog-sshot.png" width="50%" height="50%" alt="screenshot"></img>
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
