@@ -2,7 +2,7 @@
 
 This project was created as part of the Scrimba React course.
 
-<img src="react/scrimba/airbnb/src/images/sshot_airbnb.png" alt="screenshot"></img>
+<img src="https://github.com/intothevoid/bikeshed/blob/b2b5006ce9095ec88d380c90c5554eb2deead59d/react/scrimba/airbnb/src/images/sshot_airbnb.png?raw=true" alt="screenshot"></img>
 
 ## Available Scripts
 
