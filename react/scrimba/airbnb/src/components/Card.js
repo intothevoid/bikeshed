@@ -3,8 +3,17 @@ import './Card.css';
 import data from '../data'
 
 function CardItem(props) {
+  let badgeText
+  if (props.openSpots === 0)
+  {
+    badgeText = "SOLD OUT";
+  }
+  else if (props.location === "Online") {
+    badgeText = "ONLINE";
+  }
     return (
       <div className="card-item">
+        {badgeText && <div className='card-item-badge'>{badgeText}</div>}
         <img className="card-item-image" src={props.img} alt="thumbnail"></img>
         <div className="card-item-rating">
           <img className="card-item-star" src={star} alt="star"></img>
@@ -25,10 +34,11 @@ function Card() {
         id={item.id}
         img={item.coverImg}
         r1={item.stats.rating}
-        r2={`(${item.stats.reviewCount}) USA`}
+        r2={`(${item.stats.reviewCount}) ${item.location}`}
         r3={item.title}
         r4={`From ${item.price}`}
         r5=" / person"
+        openSpots={item.openSpots}
       />
     )
   });
