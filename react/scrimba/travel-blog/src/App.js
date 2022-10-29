@@ -1,6 +1,13 @@
+import Navbar from "./components/Navbar";
+import Post from "./components/Post";
+
 function App() {
   return (
-    <h3>App component</h3>
+    <div>
+      <Navbar />
+      <Post />
+      <Post />
+    </div>
   );
 }
 
