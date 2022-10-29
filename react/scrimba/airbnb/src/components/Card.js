@@ -1,11 +1,11 @@
-import katie from '../images/katie-zaferes.png'
 import star from '../images/star.png'
 import './Card.css';
+import data from '../data'
 
 function CardItem(props) {
     return (
       <div className="card-item">
-        <img className="card-item-image" src={props.imgurl} alt="katie"></img>
+        <img className="card-item-image" src={props.img} alt="thumbnail"></img>
         <div className="card-item-rating">
           <img className="card-item-star" src={star} alt="star"></img>
           <div className="r1">{props.r1}</div>
@@ -18,18 +18,22 @@ function CardItem(props) {
 }
 
 function Card() {
-  return (
-    <section className="card">
+  const dataElements = data.map((item, i) => {
+    return (
       <CardItem
-        imgurl={katie}
-        r1={5.0}
-        r2="(6) USA"
-        r3="Life lessons with Katie Zaferes"
-        r4="From $136"
+        key={i}
+        id={item.id}
+        img={item.coverImg}
+        r1={item.stats.rating}
+        r2={`(${item.stats.reviewCount}) USA`}
+        r3={item.title}
+        r4={`From ${item.price}`}
         r5=" / person"
       />
-    </section>
-  );
+    )
+  });
+
+  return <section className='card-list'>{dataElements}</section>;
 }
 
 export default Card;

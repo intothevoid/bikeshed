@@ -9,7 +9,6 @@ body {
 .card-item {
     display: flex;
     flex-direction: column;
-    margin-right: 18px;
 }
 
 .card-item-image {
@@ -60,6 +59,8 @@ body {
     font-size: 12px;
     line-height: 110%;
     color: #222222;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .r4 {
@@ -72,8 +73,13 @@ body {
     color: #222222;
 }
 
-.card {
-    padding-left: 37px;
-    padding-top: 49px;
+section {
+    padding-left: 25px;
+}
+
+.card-list {
     display: flex;
+    gap: 20px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
 }

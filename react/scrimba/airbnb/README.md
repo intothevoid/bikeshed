@@ -1,6 +1,8 @@
-# Getting Started with Create React App
+# airbnb experiences app - React
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was created as part of the Scrimba React course.
+
+<img src="src/images/sshot_airbnb.pbg" alt="screenshot">
 
 ## Available Scripts
 
