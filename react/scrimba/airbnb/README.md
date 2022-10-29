@@ -2,7 +2,7 @@
 
 This project was created as part of the Scrimba React course.
 
-<img src="src/images/sshot_airbnb.pbg" alt="screenshot">
+<img src="react/scrimba/airbnb/src/images/sshot_airbnb.png" alt="screenshot"></img>
 
 ## Available Scripts
 
