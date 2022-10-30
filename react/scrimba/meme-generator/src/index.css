@@ -43,3 +43,47 @@
 
   color: #ffffff;
 }
+
+.meme {
+  display: flex;
+  flex-direction: column;
+  padding: 36px;
+  align-items: center;
+}
+
+.meme-top {
+  display: flex;
+}
+
+.meme-textbox {
+  width: 230px;
+  height: 35px;
+  margin: 10px;
+
+  border: 1px solid #d5d4d8;
+  border-radius: 5px;
+
+  text-indent: 5px;
+}
+
+.meme-button {
+  width: 515px;
+  height: 40px;
+  margin-top: 20px;
+
+  background: linear-gradient(90.41deg, #711f8d 1.14%, #a818da 100%);
+  border-radius: 5px;
+  font-family: "Karla";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+
+  /* identical to box height */
+  text-align: center;
+  letter-spacing: -0.1em;
+
+  color: #ffffff;
+  cursor: pointer;
+  border: none;
+}
