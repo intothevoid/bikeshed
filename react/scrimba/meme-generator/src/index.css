@@ -87,3 +87,10 @@
   cursor: pointer;
   border: none;
 }
+
+.meme-img {
+  width: 515px;
+  height: 515px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
