@@ -1,19 +1,15 @@
 import React from "react";
 import memesData from "../memesData";
 
-function updateMemeImage() {
-  const url = getRandomMemeUrl();
-  const memeImage = document.getElementById("meme");
-  memeImage.src = url;
-}
-
-function getRandomMemeUrl() {
-  const randomIndex = Math.floor(Math.random() * memesData.data.memes.length);
-  console.log("index" + randomIndex);
-  return memesData.data.memes.at(randomIndex).url;
-}
-
 function Meme() {
+  const [memeUrl, setMemeUrl] = React.useState("");
+
+  function getRandomMemeUrl() {
+    const randomIndex = Math.floor(Math.random() * memesData.data.memes.length);
+    console.log("index" + randomIndex);
+    setMemeUrl(memesData.data.memes.at(randomIndex).url);
+  }
+
   return (
     <div className="meme">
       <div>
@@ -25,16 +21,11 @@ function Meme() {
             placeholder="Bottom Text"
           />
         </div>
-        <button className="meme-button" onClick={updateMemeImage}>
+        <button className="meme-button" onClick={getRandomMemeUrl}>
           Get a new meme image 🖼
         </button>
       </div>
-      <img
-        id="meme"
-        src={getRandomMemeUrl()}
-        className="meme-img"
-        alt="Loading meme..."
-      />
+      <img id="meme" src={memeUrl} className="meme-img" alt="Loading meme..." />
     </div>
   );
 }
