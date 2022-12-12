@@ -1,6 +1,8 @@
-# Getting Started with Create React App
+# Spotify Backup Playlists
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project can be used to backup your Spotify playlists. It downloads a zip file containing your playlists.
+
+<img src="src/images/screenshot.jpeg" width="50%" height="50%"></img>
 
 ## Available Scripts
 
