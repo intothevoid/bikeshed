@@ -10,12 +10,13 @@
 }
 
 .spotify-login-logo {
-  width:40%;
+  width: 40%;
   height: auto;
 }
 
 .login-button {
   background-color: #1db954;
+  border: 0;
   padding: 20px;
   border-radius: 99px;
   font-weight: 800;
