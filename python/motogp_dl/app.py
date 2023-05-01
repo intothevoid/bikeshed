@@ -28,9 +28,16 @@ def parse_feed(latest: bool = True):
 
                 try:
                     # Pass magnet link to rtorrent via command line
-                    subprocess.run(
-                        ["rtorrent", "-q", "-d", f"{DOWNLOAD_DIR}", magnet_link]
+                    print(f"Downloading: {magnet_link} via rtorrent")
+                    ret = subprocess.run(
+                        ["rtorrent", "-d", f"{DOWNLOAD_DIR}", magnet_link]
                     )
+                    # process return code
+                    if ret.returncode == 0:
+                        print(f"Downloaded: {magnet_link}")
+                    else:
+                        print(f"Error downloading: {magnet_link}")
+                        continue
                 except FileNotFoundError as exc:
                     print(f"rtorrent not found {exc}")
                     if latest:

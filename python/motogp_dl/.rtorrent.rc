@@ -1,0 +1,12 @@
+# Global settings
+directory = /home/rtorrent/downloads
+session = /home/rtorrent/.rtorrent/session
+encryption = allow_incoming,try_outgoing,enable_retry
+schedule = watch_directory,5,5,"load_start=/home/rtorrent/watch/*.torrent"
+schedule = untied_directory,5,5,"stop_untied=/home/rtorrent/watch/*.torrent"
+system.daemon.set = true
+
+# Trackers
+scgi_port = 127.0.0.1:5000
+trackers.use_udp.set = 1
+trackers.numwant.set = 100

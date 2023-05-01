@@ -1,24 +1,31 @@
 # Dockerfile to download python environment, install packages in requirements.txt
 # and rtorrent binaries
-# Build stage
 FROM python:3.10-alpine
-WORKDIR /home/rtorrent
-COPY requirements.txt /tmp/
-RUN python -m venv /home/rtorrent/venv
-ENV PATH="/home/rtorrent/venv/bin:$PATH"
-RUN pip install --no-cache-dir -r /tmp/requirements.txt
-COPY downloaded.txt .
-COPY app.py .
 
-# Package stage
-FROM python:3.10.0-alpine3.14
+# Set working directory
+WORKDIR /home/rtorrent
+
+# Install rtorrent
+RUN apk update
 RUN apk add --no-cache rtorrent
-RUN adduser -D -h /home/rtorrent rtorrent
+
+# Install python packages
+COPY requirements.txt /tmp/
+RUN pip install -r /tmp/requirements.txt
+
+# Create user
+RUN adduser -D -u 1000 -h /home/rtorrent rtorrent
+
+# Create directories
 RUN mkdir -p /home/rtorrent/.rtorrent/session
+
+# Set permissions
 RUN chown -R rtorrent:rtorrent /home/rtorrent
+
+# Copy rtorrent config
 COPY .rtorrent.rc /home/rtorrent/
-COPY --from=build /home/rtorrent /home/rtorrent
+
+# Launch app
+COPY app.py /home/rtorrent/
 USER rtorrent
 CMD ["python", "app.py"]
-
-
