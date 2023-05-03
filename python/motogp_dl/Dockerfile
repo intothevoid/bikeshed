@@ -10,6 +10,10 @@ RUN apk add --no-cache aria2
 COPY requirements.txt /tmp/
 RUN pip install -r /tmp/requirements.txt
 
+# Copy dht.dat file to avoid errors in docker container
+# like [ERROR] Exception caught while loading DHT routing table from /root/.cache/aria2/dht.dat
+COPY dht.dat /root/.cache/aria2/dht.dat
+
 # Launch app
 COPY app.py .
 CMD ["python", "app.py"]

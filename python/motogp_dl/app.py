@@ -30,7 +30,15 @@ def parse_feed(latest: bool = True):
                     # Pass magnet link to aria2 via command line
                     print(f"Downloading: {magnet_link} via aria2")
                     ret = subprocess.run(
-                        ["aria2c", "-d", f"{DOWNLOAD_DIR}", magnet_link]
+                        [
+                            "aria2c",
+                            "--listen-port",
+                            "6881-6885",
+                            "--disable-ipv6=true",
+                            "-d",
+                            f"{DOWNLOAD_DIR}",
+                            magnet_link,
+                        ]
                     )
                     # process return code
                     if ret.returncode == 0:
