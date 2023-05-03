@@ -5,7 +5,7 @@ import time
 
 # Settings
 FEED = feedparser.parse("https://www.reddit.com/r/MotorsportsReplays.rss")
-DOWNLOAD_DIR = "/home/rtorrent/downloads"
+DOWNLOAD_DIR = "/downloads"
 QUALITY = "1080"
 INTERVAL_MINS = 60  # minutes
 
@@ -27,10 +27,10 @@ def parse_feed(latest: bool = True):
                     continue
 
                 try:
-                    # Pass magnet link to rtorrent via command line
-                    print(f"Downloading: {magnet_link} via rtorrent")
+                    # Pass magnet link to aria2 via command line
+                    print(f"Downloading: {magnet_link} via aria2")
                     ret = subprocess.run(
-                        ["rtorrent", "-d", f"{DOWNLOAD_DIR}", magnet_link]
+                        ["aria2c", "-d", f"{DOWNLOAD_DIR}", magnet_link]
                     )
                     # process return code
                     if ret.returncode == 0:
