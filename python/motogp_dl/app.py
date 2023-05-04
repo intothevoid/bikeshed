@@ -63,13 +63,20 @@ def parse_feed(latest: bool = True):
 
 
 def already_downloaded(magnet_link: str) -> bool:
+    """
+    This function checks if a magnet link has already been downloaded.
+    It reads in the magnet link as a parameter and then searches through the downloaded.txt file
+    to see if the link is in there. If it finds the link it will return True, otherwise it will
+    return False. If the file does not exist it will skip it and return False."""
     try:
         with open("downloaded.txt", "r") as f:
             for line in f.readlines():
                 if magnet_link in line:
                     return True
     except FileNotFoundError:
-        pass
+        # create empty file if it doesn't exist
+        with open("downloaded.txt", "w") as f:
+            pass
 
     return False
 
