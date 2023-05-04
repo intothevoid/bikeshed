@@ -12,7 +12,7 @@ RUN pip install -r /tmp/requirements.txt
 
 # Copy dht.dat file to avoid errors in docker container
 # like [ERROR] Exception caught while loading DHT routing table from /root/.cache/aria2/dht.dat
-COPY dht.dat /root/.cache/aria2/dht.dat
+COPY resources/dht.dat /root/.cache/aria2/dht.dat
 
 # Launch app
 COPY app.py .

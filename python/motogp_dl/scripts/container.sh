@@ -10,7 +10,7 @@ mkdir -p ./downloads
 chmod 777 ./downloads
 
 # run the container
-docker run -d --rm \
+docker run -d \
   --name motogp-dl \
   --restart unless-stopped \
   -p 6911:6911 -p 6881-6885:6881-6885 \

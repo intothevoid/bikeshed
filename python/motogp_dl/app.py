@@ -1,3 +1,5 @@
+import contextlib
+import logging
 import feedparser
 import re
 import subprocess
@@ -8,10 +10,32 @@ FEED = feedparser.parse("https://www.reddit.com/r/MotorsportsReplays.rss")
 DOWNLOAD_DIR = "/downloads"
 QUALITY = "1080"
 INTERVAL_MINS = 60  # minutes
+DELETE_OLD_FILES = True
+DELETE_OLD_FILES_THRESHOLD = 10  # GB
+STOP_DOWNLOAD_THRESHOLD = 5  # GB
+
+# setup logging
+logging.basicConfig(
+    filename=f"app.log",
+    filemode="a",
+    format="%(asctime)s - %(message)s",
+    level=logging.INFO,
+)
+
+LOGGER = logging.getLogger(__name__)
 
 
 # Iterate over the entries and extract magnet links
 def parse_feed(latest: bool = True):
+    """This function parses the RSS feed and downloads the torrents.
+    It looks for titles with 'motogp' and the specified quality or 'HD'.
+    It checks if the torrent has already been downloaded and skips it if so.
+    It then downloads the torrent using aria2 and adds the torrent to the downloaded.txt file.
+     Args:
+        latest (bool): If True, only the latest torrent is downloaded.
+     Returns:
+        None
+    """
     for entry in FEED.entries:
         if "motogp" in entry.title.lower() and (
             f"{QUALITY}" in entry.title.lower() or "hd" in entry.title.lower()
@@ -20,15 +44,15 @@ def parse_feed(latest: bool = True):
             match = re.search(r"magnet:\?xt=urn:btih:\w+", entry.content[0].value)
             if match:
                 magnet_link = match.group(0)
-                print(f"Found magnet link:{entry.title} - {magnet_link}")
+                LOGGER.info(f"Found magnet link:{entry.title} - {magnet_link}")
 
                 if already_downloaded(magnet_link):
-                    print(f"Already downloaded - skipping: {magnet_link}")
+                    LOGGER.info(f"Already downloaded - skipping: {magnet_link}")
                     continue
 
                 try:
                     # Pass magnet link to aria2 via command line
-                    print(f"Downloading: {magnet_link} via aria2")
+                    LOGGER.info(f"Downloading: {magnet_link} via aria2")
                     ret = subprocess.run(
                         [
                             "aria2c",
@@ -38,16 +62,17 @@ def parse_feed(latest: bool = True):
                             "-d",
                             f"{DOWNLOAD_DIR}",
                             magnet_link,
-                        ]
+                        ],
+                        check=True,
                     )
                     # process return code
                     if ret.returncode == 0:
-                        print(f"Downloaded: {magnet_link}")
+                        LOGGER.info(f"Downloaded: {magnet_link}")
                     else:
-                        print(f"Error downloading: {magnet_link}")
+                        LOGGER.error(f"Error downloading: {magnet_link}")
                         continue
                 except FileNotFoundError as exc:
-                    print(f"rtorrent not found {exc}")
+                    LOGGER.error(f"aria2c not found {exc}")
                     if latest:
                         break
                     else:
@@ -55,11 +80,12 @@ def parse_feed(latest: bool = True):
 
                 # record magnet link to file as downloaded
                 with open("downloaded.txt", "a") as f:
-                    f.write(f"{magnet_link}\n")
-
-                # only fetch  the latest magnet link
+                    with contextlib.suppress(Exception):
+                        f.write(f"{magnet_link}\n")
                 if latest:
                     break
+
+            LOGGER.info(f"Downloaded {magnet_link}")
 
 
 def already_downloaded(magnet_link: str) -> bool:
@@ -79,6 +105,32 @@ def already_downloaded(magnet_link: str) -> bool:
             pass
 
     return False
+
+
+def is_disk_space_below_threshold(threshold: int = DELETE_OLD_FILES_THRESHOLD) -> bool:
+    """This function checks the disk space of the download directory.
+    If the disk space is less than 10GB it will delete the oldest file in the directory.
+    """
+    # get disk space
+    df = subprocess.run(["df", "-h", f"{DOWNLOAD_DIR}"], capture_output=True)
+    disk_space = df.stdout.decode("utf-8").split("\n")[1].split()[3]
+
+    # check if disk space is less than threshold
+    if int(disk_space[:-1]) < threshold:
+        return True
+
+    return False
+
+
+def delete_oldest_file():
+    # get oldest file in directory
+    files = subprocess.run(
+        ["ls", "-t", f"{DOWNLOAD_DIR}"], capture_output=True
+    ).stdout.decode("utf-8")
+    oldest_file = files.split("\n")[-2]
+
+    # delete oldest file
+    subprocess.run(["rm", f"{DOWNLOAD_DIR}/{oldest_file}"])
 
 
 # Call parse_feed() every INTERVAL_MINS minutes

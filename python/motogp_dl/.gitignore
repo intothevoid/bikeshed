@@ -10,3 +10,6 @@ downloads/
 # unittest
 test-reports/
 
+# __pycache__
+__pycache__/
+tests/__pycache__/
