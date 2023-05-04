@@ -1,2 +1,12 @@
 venv/
 downloads/
+
+# python gitignore
+*.py[cod]
+
+# mypy
+.mypy_cache/
+
+# unittest
+test-reports/
+
