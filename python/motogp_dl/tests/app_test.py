@@ -2,8 +2,6 @@
 import os
 import unittest
 from unittest.mock import patch
-import subprocess
-
 from app import DOWNLOAD_DIR, already_downloaded, is_disk_space_below_threshold
 
 
@@ -40,32 +38,16 @@ class AlreadyDownloadedTest(unittest.TestCase):
 
 
 class IsDiskSpaceBelowThresholdTest(unittest.TestCase):
-    @patch("subprocess.run")
-    def test_is_disk_space_below_threshold(self, mock_run):
-        # Arrange
-        mock_output = "Filesystem      Size  Used Avail Use% Mounted on\n/dev/sda1       100G   90G   9G  90% /downloads\n"
-        mock_run.return_value.stdout.decode.return_value = mock_output
+    @patch("app.psutil.disk_usage")
+    def test_below_threshold(self, mock_disk_usage):
+        mock_disk_usage.return_value.free = 5 * (2**30)  # set free space to 5GB
+        self.assertTrue(
+            is_disk_space_below_threshold(10)
+        )  # check if space is below threshold of 10GB
 
-        # Act
-        result = is_disk_space_below_threshold()
-
-        # Assert
-        mock_run.assert_called_once_with(
-            ["df", "-h", f"{DOWNLOAD_DIR}"], capture_output=True
-        )
-        self.assertTrue(result)
-
-    @patch("subprocess.run")
-    def test_is_disk_space_above_threshold(self, mock_run):
-        # Arrange
-        mock_output = "Filesystem      Size  Used Avail Use% Mounted on\n/dev/sda1       100G   80G   20G  80% /downloads\n"
-        mock_run.return_value.stdout.decode.return_value = mock_output
-
-        # Act
-        result = is_disk_space_below_threshold()
-
-        # Assert
-        mock_run.assert_called_once_with(
-            ["df", "-h", f"{DOWNLOAD_DIR}"], capture_output=True
-        )
-        self.assertFalse(result)
+    @patch("app.psutil.disk_usage")
+    def test_above_threshold(self, mock_disk_usage):
+        mock_disk_usage.return_value.free = 15 * (2**30)  # set free space to 15GB
+        self.assertFalse(
+            is_disk_space_below_threshold(10)
+        )  # check if space is above threshold of 10GB
