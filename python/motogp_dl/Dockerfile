@@ -4,7 +4,7 @@ FROM python:3.10-alpine
 
 # Install rtorrent
 RUN apk update
-RUN apk add --no-cache aria2
+RUN apk add --no-cache aria2 gcc python3-dev musl-dev linux-headers
 
 # Install python packages
 COPY requirements.txt /tmp/
