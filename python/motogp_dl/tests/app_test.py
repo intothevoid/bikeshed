@@ -1,8 +1,8 @@
-# Unit tests for app.py
+# Unit tests for motogp_dl.py
 import os
 import unittest
 from unittest.mock import patch
-from app import DOWNLOAD_DIR, already_downloaded, is_disk_space_below_threshold
+from motogp_dl import DOWNLOAD_DIR, already_downloaded, is_disk_space_below_threshold
 
 
 class AlreadyDownloadedTest(unittest.TestCase):
@@ -38,14 +38,14 @@ class AlreadyDownloadedTest(unittest.TestCase):
 
 
 class IsDiskSpaceBelowThresholdTest(unittest.TestCase):
-    @patch("app.psutil.disk_usage")
+    @patch("motogp_dl.psutil.disk_usage")
     def test_below_threshold(self, mock_disk_usage):
         mock_disk_usage.return_value.free = 5 * (2**30)  # set free space to 5GB
         self.assertTrue(
             is_disk_space_below_threshold(10)
         )  # check if space is below threshold of 10GB
 
-    @patch("app.psutil.disk_usage")
+    @patch("motogp_dl.psutil.disk_usage")
     def test_above_threshold(self, mock_disk_usage):
         mock_disk_usage.return_value.free = 15 * (2**30)  # set free space to 15GB
         self.assertFalse(

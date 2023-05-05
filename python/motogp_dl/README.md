@@ -28,7 +28,7 @@ This will start the container and run the Python script.
 
 ## Configuration
 
-The script can be configured by changing the values of the following variables in the `app.py` file:
+The script can be configured by changing the values of the following variables in the `motogp_dl.py` file:
 ```
 FEED - The URL of the RSS feed to check for new posts
 DOWNLOAD_TYPES - example: ["motogp", "formula 1"]. The script will only download videos that match one of these keywords in post titles.

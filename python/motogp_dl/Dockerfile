@@ -14,6 +14,6 @@ RUN pip install -r /tmp/requirements.txt
 # like [ERROR] Exception caught while loading DHT routing table from /root/.cache/aria2/dht.dat
 COPY resources/dht.dat /root/.cache/aria2/dht.dat
 
-# Launch app
-COPY app.py .
-CMD ["python", "app.py"]
+# Launch motogp-dl
+COPY motogp_dl.py .
+CMD ["python", "motogp_dl.py"]

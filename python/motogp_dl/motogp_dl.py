@@ -19,7 +19,7 @@ DELETE_OLD_FILES_THRESHOLD = 10  # GB
 
 # setup logging
 logging.basicConfig(
-    filename=f"app.log",
+    filename=f"motogp_dl.log",
     filemode="a",
     format="%(asctime)s - %(levelname)s - %(message)s",
     level=logging.INFO,
