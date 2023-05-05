@@ -12,7 +12,6 @@ QUALITY = "1080"
 INTERVAL_MINS = 60  # minutes
 DELETE_OLD_FILES = True
 DELETE_OLD_FILES_THRESHOLD = 10  # GB
-STOP_DOWNLOAD_THRESHOLD = 5  # GB
 
 # setup logging
 logging.basicConfig(
@@ -50,21 +49,17 @@ def parse_feed(latest: bool = True):
                     LOGGER.info(f"Already downloaded - skipping: {magnet_link}")
                     continue
 
+                # check disk space, delete oldest file if below threshold until above threshold
+                while is_disk_space_below_threshold(DELETE_OLD_FILES_THRESHOLD):
+                    LOGGER.warning(f"Disk space below threshold - deleting oldest file")
+                    delete_oldest_file()
+
+                    time.sleep(15)  # sleep for 15 seconds, wait for file to be deleted
+
                 try:
                     # Pass magnet link to aria2 via command line
                     LOGGER.info(f"Downloading: {magnet_link} via aria2")
-                    ret = subprocess.run(
-                        [
-                            "aria2c",
-                            "--listen-port",
-                            "6881-6885",
-                            "--disable-ipv6=true",
-                            "-d",
-                            f"{DOWNLOAD_DIR}",
-                            magnet_link,
-                        ],
-                        check=True,
-                    )
+                    ret = run_aria2c(magnet_link)
                     # process return code
                     if ret.returncode == 0:
                         LOGGER.info(f"Downloaded: {magnet_link}")
@@ -82,10 +77,33 @@ def parse_feed(latest: bool = True):
                 with open("downloaded.txt", "a") as f:
                     with contextlib.suppress(Exception):
                         f.write(f"{magnet_link}\n")
+
+                # break out if we have downloaded the latest
                 if latest:
                     break
 
             LOGGER.info(f"Downloaded {magnet_link}")
+
+
+def run_aria2c(magnet_link):
+    """
+    This function runs aria2c via the command line.
+    It takes in a magnet link as a parameter and then runs aria2c with the magnet link.
+    """
+    ret = subprocess.run(
+        [
+            "aria2c",
+            "--listen-port",
+            "6881-6885",
+            "--disable-ipv6=true",
+            "-d",
+            f"{DOWNLOAD_DIR}",
+            magnet_link,
+        ],
+        check=True,
+    )
+
+    return ret
 
 
 def already_downloaded(magnet_link: str) -> bool:
@@ -123,6 +141,12 @@ def is_disk_space_below_threshold(threshold: int = DELETE_OLD_FILES_THRESHOLD) -
 
 
 def delete_oldest_file():
+    """
+    This function deletes the oldest file in the download directory.
+    """
+    if not DELETE_OLD_FILES:
+        return
+
     # get oldest file in directory
     files = subprocess.run(
         ["ls", "-t", f"{DOWNLOAD_DIR}"], capture_output=True
