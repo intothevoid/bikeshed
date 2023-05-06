@@ -6,8 +6,8 @@
 # It also creates a volume to store any downloads in the current directory.
 
 # create downloads directory if it doesn't exist, give it write permissions with existing user and group
-mkdir -p ./downloads
-chmod 777 ./downloads
+mkdir -p downloads
+chmod 777 downloads
 
 # run the container
 docker run -d -it \
