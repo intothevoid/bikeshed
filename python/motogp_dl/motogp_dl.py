@@ -70,10 +70,12 @@ def parse_feed(latest: bool = True):
                     if ret.returncode == 0:
                         LOGGER.info(f"Downloaded: {magnet_link}")
                     else:
+                        send_gotify_message(f"Error downloading: {magnet_link}")
                         LOGGER.error(f"Error downloading: {magnet_link}")
                         continue
                 except FileNotFoundError as exc:
                     LOGGER.error(f"aria2c not found {exc}")
+                    send_gotify_message(f"aria2c not found {exc}")
                     if latest:
                         break
                     else:
@@ -165,5 +167,9 @@ if __name__ == "__main__":
     # check feed every INTERVAL_MINS minutes
     while True:
         LOGGER.info("Parsing reddit.com/r/MotorsportsReplays feed for new content")
-        parse_feed(True)
+        try:
+            parse_feed(True)
+        except Exception as exc:
+            LOGGER.error(f"Error parsing feed: {exc}")
+            send_gotify_message(f"Error parsing feed: {exc}")
         time.sleep(60 * INTERVAL_MINS)  # interval in mins
