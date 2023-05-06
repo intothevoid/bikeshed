@@ -2,7 +2,11 @@
 import os
 import unittest
 from unittest.mock import patch
+
+import requests
+from gotify.message import send_gotify_message
 from motogp_dl import DOWNLOAD_DIR, already_downloaded, is_disk_space_below_threshold
+from util.log import LOGGER
 
 
 class AlreadyDownloadedTest(unittest.TestCase):
@@ -51,3 +55,27 @@ class IsDiskSpaceBelowThresholdTest(unittest.TestCase):
         self.assertFalse(
             is_disk_space_below_threshold(10)
         )  # check if space is above threshold of 10GB
+
+
+class GotifyTest(unittest.TestCase):
+    # Tests that a message is successfully sent to gotify when all inputs are valid.
+    @patch("gotify.message.requests.post")
+    def test_send_gotify_message_with_valid_inputs(self, mocker):
+        # arrange
+        os.environ["GOTIFY_TOKEN"] = "token"
+        os.environ["GOTIFY_URL"] = "url"
+        os.environ["GOTIFY_APP_ID"] = "app_id"
+
+        # act
+        send_gotify_message("test message")
+
+        # assert
+        requests.post.assert_called_once_with(
+            f"url/message?token=token&app=app_id",
+            json={
+                "message": "test message",
+                "priority": 5,
+                "title": "motogp_dl",
+                "extras": None,
+            },
+        )
