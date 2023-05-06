@@ -1,12 +1,17 @@
 # Unit tests for motogp_dl.py
 import os
+import subprocess
 import unittest
 from unittest.mock import patch
 
 import requests
 from gotify.message import send_gotify_message
-from motogp_dl import DOWNLOAD_DIR, already_downloaded, is_disk_space_below_threshold
-from util.log import LOGGER
+from motogp_dl import (
+    DOWNLOAD_DIR,
+    already_downloaded,
+    is_disk_space_below_threshold,
+    run_aria2c,
+)
 
 
 class AlreadyDownloadedTest(unittest.TestCase):
@@ -78,4 +83,28 @@ class GotifyTest(unittest.TestCase):
                 "title": "motogp_dl",
                 "extras": None,
             },
+        )
+
+
+class AriaTest(unittest.TestCase):
+    # Tests that run_aria2c successfully downloads a file with a valid magnet link.
+    @patch("subprocess.run")
+    def test_run_aria2c_happy_path(self, mocker):
+        # Setup
+        magnet_link = "valid_magnet_link"
+        mocker.patch("subprocess.run")
+        # Exercise
+        run_aria2c(magnet_link)
+        # Verify
+        subprocess.run.assert_called_once_with(
+            [
+                "aria2c",
+                "--listen-port",
+                "6881-6885",
+                "--disable-ipv6=true",
+                "-d",
+                f"{DOWNLOAD_DIR}",
+                magnet_link,
+            ],
+            check=True,
         )
