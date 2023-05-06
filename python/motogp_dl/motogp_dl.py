@@ -1,3 +1,10 @@
+import os
+import sys
+
+# Add the root folder to the module search path
+root_folder = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(root_folder)
+
 import datetime
 import psutil
 import contextlib
