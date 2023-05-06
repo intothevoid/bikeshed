@@ -15,4 +15,7 @@ docker run -d -it \
   --restart unless-stopped \
   -p 6911:6911 -p 6881-6885:6881-6885 \
   -v ./downloads:/downloads \
+  -e GOTIFY_APP_ID="" \
+  -e GOTIFY_URL="" \
+  -e GOTIFY_TOKEN="" \
   motogp-dl:latest
