@@ -39,6 +39,17 @@ DELETE_OLD_FILES - If set to True, the script will delete old videos if the disk
 DELETE_OLD_FILES_THRESHOLD - The minimum amount of free disk space in GB. If the disk is under this threshold, the script will delete old videos. Integer value in GB.
 ```
 
+## Notifications
+If you want to receive notifications when the script downloads a new video, you can use the Gotify notification service. To do this, you need to follow these steps:
+1. Setup a Gotify server by following the instructions on the [Gotify website](https://gotify.net/docs/install).
+2. Create a new application on the Gotify server called "motogp-dl" and set the following environments variables:
+
+```bash
+export GOTIFY_URL - The URL of your Gotify server
+export GOTIFY_APP_ID - The ID of your Gotify application
+export GOTIFY_TOKEN - The token of your Gotify application
+```
+
 ## Dependencies
 
 This script requires the following dependencies:

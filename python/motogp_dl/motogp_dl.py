@@ -1,12 +1,12 @@
-import sys
+import datetime
 import psutil
 import contextlib
-import logging
 import feedparser
 import re
 import subprocess
 import time
-import logging
+from gotify.message import send_gotify_message
+from util.log import LOGGER
 
 # Settings
 FEED = feedparser.parse("https://www.reddit.com/r/MotorsportsReplays.rss")
@@ -17,21 +17,9 @@ INTERVAL_MINS = 60  # minutes
 DELETE_OLD_FILES = True
 DELETE_OLD_FILES_THRESHOLD = 10  # GB
 
-# setup logging
-logging.basicConfig(
-    filename=f"motogp_dl.log",
-    filemode="a",
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    level=logging.INFO,
-)
-
-# add console handler
-console_handler = logging.StreamHandler(sys.stdout)
-console_handler.setLevel(logging.INFO)
-console_handler.setFormatter(
-    logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-)
-logging.getLogger("").addHandler(console_handler)
+# Notification settings
+# If you wish to use gotify, you need to set the following environment variables:
+# GOTIFY_URL, GOTIFY_APP_ID and GOTIFY_TOKEN
 
 
 # Iterate over the entries and extract magnet links
@@ -45,11 +33,12 @@ def parse_feed(latest: bool = True):
      Returns:
         None
     """
-    logging.info(
+    LOGGER.info(
         f"Searching for downloads of type(s): {DOWNLOAD_TYPES} - Quality: {QUALITY}"
     )
+
     for entry in FEED.entries:
-        logging.info(f"Checking entry: {entry.title}")
+        LOGGER.info(f"Checking entry: {entry.title}")
         if any(dl_type in entry.title.lower() for dl_type in DOWNLOAD_TYPES) and (
             f"{QUALITY}" in entry.title.lower() or "hd" in entry.title.lower()
         ):
@@ -57,33 +46,34 @@ def parse_feed(latest: bool = True):
             match = re.search(r"magnet:\?xt=urn:btih:\w+", entry.content[0].value)
             if match:
                 magnet_link = match.group(0)
-                logging.info(f"Found magnet link:{entry.title} - {magnet_link}")
+                LOGGER.info(f"Found magnet link:{entry.title} - {magnet_link}")
 
                 if already_downloaded(magnet_link):
-                    logging.info(f"Already downloaded - skipping: {magnet_link}")
+                    LOGGER.info(f"Already downloaded - skipping: {magnet_link}")
                     continue
+
+                # Send notification
+                send_gotify_message(f"Found new video: {entry.title} - {magnet_link}")
 
                 # check disk space, delete oldest file if below threshold until above threshold
                 while is_disk_space_below_threshold(DELETE_OLD_FILES_THRESHOLD):
-                    logging.warning(
-                        f"Disk space below threshold - deleting oldest file"
-                    )
+                    LOGGER.warning(f"Disk space below threshold - deleting oldest file")
                     delete_oldest_file()
 
                     time.sleep(15)  # sleep for 15 seconds, wait for file to be deleted
 
                 try:
                     # Pass magnet link to aria2 via command line
-                    logging.info(f"Downloading: {magnet_link} via aria2")
+                    LOGGER.info(f"Downloading: {magnet_link} via aria2")
                     ret = run_aria2c(magnet_link)
                     # process return code
                     if ret.returncode == 0:
-                        logging.info(f"Downloaded: {magnet_link}")
+                        LOGGER.info(f"Downloaded: {magnet_link}")
                     else:
-                        logging.error(f"Error downloading: {magnet_link}")
+                        LOGGER.error(f"Error downloading: {magnet_link}")
                         continue
                 except FileNotFoundError as exc:
-                    logging.error(f"aria2c not found {exc}")
+                    LOGGER.error(f"aria2c not found {exc}")
                     if latest:
                         break
                     else:
@@ -168,8 +158,12 @@ def delete_oldest_file():
 
 # Call parse_feed() every INTERVAL_MINS minutes
 if __name__ == "__main__":
-    logging.info("Starting MotoGP Downloader v1.0")
+    curr_date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    LOGGER.info(f"Starting MotoGP Downloader v1.0. Time: {curr_date}")
+    send_gotify_message(f"Starting MotoGP Downloader v1.0. Time: {curr_date}")
+
+    # check feed every INTERVAL_MINS minutes
     while True:
-        logging.info("Parsing reddit.com/r/MotorsportsReplays feed for new content")
+        LOGGER.info("Parsing reddit.com/r/MotorsportsReplays feed for new content")
         parse_feed(True)
         time.sleep(60 * INTERVAL_MINS)  # interval in mins
