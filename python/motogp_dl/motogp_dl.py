@@ -12,7 +12,7 @@ import feedparser
 import re
 import subprocess
 import time
-from notify.gotify import send_gotify_message
+from notify.notify import send_notification
 from util.log import LOGGER
 from util.config import load_config
 
@@ -75,7 +75,7 @@ def parse_feed(latest: bool = True):
                     continue
 
                 # Send notification
-                send_gotify_message(f"Found new video: {entry.title} - {magnet_link}")
+                send_notification(f"Found new video: {entry.title} - {magnet_link}")
 
                 # check disk space, delete oldest file if below threshold until above threshold
                 while is_disk_space_below_threshold(DELETE_OLD_FILES_THRESHOLD):
@@ -92,12 +92,12 @@ def parse_feed(latest: bool = True):
                     if ret.returncode == 0:
                         LOGGER.info(f"Downloaded: {magnet_link}")
                     else:
-                        send_gotify_message(f"Error downloading: {magnet_link}")
+                        send_notification(f"Error downloading: {magnet_link}")
                         LOGGER.error(f"Error downloading: {magnet_link}")
                         continue
                 except FileNotFoundError as exc:
                     LOGGER.error(f"aria2c not found {exc}")
-                    send_gotify_message(f"aria2c not found {exc}")
+                    send_notification(f"aria2c not found {exc}")
                     if latest:
                         break
                     else:
@@ -184,7 +184,7 @@ def delete_oldest_file():
 if __name__ == "__main__":
     curr_date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     LOGGER.info(f"Starting MotoGP Downloader v1.0. Time: {curr_date}")
-    send_gotify_message(f"Starting MotoGP Downloader v1.0. Time: {curr_date}")
+    send_notification(f"Starting MotoGP Downloader v1.0. Time: {curr_date}")
 
     # check feed every INTERVAL_MINS minutes
     while True:
@@ -193,5 +193,5 @@ if __name__ == "__main__":
             parse_feed(True)
         except Exception as exc:
             LOGGER.error(f"Error parsing feed: {exc}")
-            send_gotify_message(f"Error parsing feed: {exc}")
+            send_notification(f"Error parsing feed: {exc}")
         time.sleep(60 * INTERVAL_MINS)  # interval in mins
