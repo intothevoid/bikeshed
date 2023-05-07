@@ -1,14 +1,25 @@
+import os
 import apprise
 from util.config import load_config
 from util.log import LOGGER
 
 SETTINGS = load_config()
 
+
+def get_env_var(var: str):
+    """Get environment variable."""
+    try:
+        return os.environ[var]
+    except KeyError:
+        LOGGER.error(f"Environment variable {var} not set")
+        return None
+
+
 # Read settings
-GOTIFY_URL = SETTINGS["GOTIFY_URL"]
-GOTIFY_TOKEN = SETTINGS["GOTIFY_TOKEN"]
-TELEGRAM_TOKEN = SETTINGS["TELEGRAM_TOKEN"]
-TELEGRAM_CHAT_ID = SETTINGS["TELEGRAM_CHAT_ID"]
+GOTIFY_URL = SETTINGS["GOTIFY_URL"] or get_env_var("GOTIFY_URL") or "localhost"
+GOTIFY_TOKEN = SETTINGS["GOTIFY_TOKEN"] or get_env_var("GOTIFY_TOKEN") or ""
+TELEGRAM_TOKEN = SETTINGS["TELEGRAM_TOKEN"] or get_env_var("TELEGRAM_TOKEN") or ""
+TELEGRAM_CHAT_ID = SETTINGS["TELEGRAM_CHAT_ID"] or get_env_var("TELEGRAM_CHAT_ID") or ""
 
 APR = apprise.Apprise()
 APR_GOTIFY = "gotify://" + GOTIFY_URL + "/" + GOTIFY_TOKEN

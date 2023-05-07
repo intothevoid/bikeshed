@@ -14,5 +14,5 @@ docker run --rm -it \
   --name motogp-dl \
   -p 6911:6911 -p 6881-6885:6881-6885 \
   -v ./downloads:/downloads \
-  --env-file=./scripts/gotify.env \
+  --env-file=./scripts/config.env \
   motogp-dl:latest
