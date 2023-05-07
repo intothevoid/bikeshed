@@ -4,7 +4,7 @@ from util.log import LOGGER
 
 
 # send message via gotify
-def send_gotify_message(message: str, title: str = "motogp_dl"):
+def send_gotify_message(message: str, title: str = "motogp-dl"):
     """
     This function sends a message to gotify via the gotify API.
     """

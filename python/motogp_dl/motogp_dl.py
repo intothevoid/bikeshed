@@ -14,15 +14,30 @@ import subprocess
 import time
 from notify.gotify import send_gotify_message
 from util.log import LOGGER
+from util.config import load_config
 
 # Settings
-FEED = feedparser.parse("https://www.reddit.com/r/MotorsportsReplays.rss")
-DOWNLOAD_TYPES = ["motogp"]  # example: ["motogp", "formula 1"]
-DOWNLOAD_DIR = "./downloads"
-QUALITY = "1080"
-INTERVAL_MINS = 60  # minutes
-DELETE_OLD_FILES = True
-DELETE_OLD_FILES_THRESHOLD = 10  # GB
+try:
+    SETTINGS = load_config()
+    FEEDURL = SETTINGS["FEED"] or "https://www.reddit.com/r/MotorsportsReplays.rss"
+    DOWNLOAD_TYPES = SETTINGS["DOWNLOAD_TYPES"] or [
+        "motogp"
+    ]  # example: ["motogp", "formula 1"]
+    DOWNLOAD_DIR = SETTINGS["DOWNLOAD_DIR"] or "./downloads"
+    QUALITY = SETTINGS["QUALITY"] or "1080"  # example: "1080p"
+    INTERVAL_MINS = SETTINGS["INTERVAL_MINS"] or 60  # example: 5
+    DELETE_OLD_FILES = SETTINGS["DELETE_OLD_FILES"] or True  # example: True
+    DELETE_OLD_FILES_THRESHOLD = (
+        SETTINGS["DELETE_OLD_FILES_THRESHOLD"] or 10
+    )  # example: 10
+except KeyError as exc:
+    LOGGER.error(f"KeyError: {exc}")
+
+# Initialise feedparser load feed
+try:
+    FEED = feedparser.parse(FEEDURL)
+except Exception as exc:
+    LOGGER.error(f"Error parsing feed: {exc}")
 
 # Notification settings
 # If you wish to use gotify, you need to set the following environment variables:
