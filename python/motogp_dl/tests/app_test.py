@@ -5,7 +5,7 @@ import unittest
 from unittest.mock import patch
 
 import requests
-from gotify.message import send_gotify_message
+from notify.gotify import send_gotify_message
 from motogp_dl import (
     DOWNLOAD_DIR,
     already_downloaded,
@@ -64,7 +64,7 @@ class IsDiskSpaceBelowThresholdTest(unittest.TestCase):
 
 class GotifyTest(unittest.TestCase):
     # Tests that a message is successfully sent to gotify when all inputs are valid.
-    @patch("gotify.message.requests.post")
+    @patch("notify.gotify.requests.post")
     def test_send_gotify_message_with_valid_inputs(self, mocker):
         # arrange
         os.environ["GOTIFY_TOKEN"] = "token"

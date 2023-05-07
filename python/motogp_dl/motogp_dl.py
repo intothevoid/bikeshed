@@ -12,7 +12,7 @@ import feedparser
 import re
 import subprocess
 import time
-from gotify.message import send_gotify_message
+from notify.gotify import send_gotify_message
 from util.log import LOGGER
 
 # Settings

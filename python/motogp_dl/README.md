@@ -42,12 +42,12 @@ DELETE_OLD_FILES_THRESHOLD - The minimum amount of free disk space in GB. If the
 ## Notifications
 If you want to receive notifications when the script downloads a new video, you can use the Gotify notification service. To do this, you need to follow these steps:
 1. Setup a Gotify server by following the instructions on the [Gotify website](https://gotify.net/docs/install).
-2. Create a new application on the Gotify server called "motogp-dl" and set the following environments variables:
+2. Create a new application on the Gotify server called "motogp-dl" and update the gotify.env file as shown -
 
 ```bash
-export GOTIFY_URL - The URL of your Gotify server
-export GOTIFY_APP_ID - The ID of your Gotify application
-export GOTIFY_TOKEN - The token of your Gotify application
+GOTIFY_URL=http://192.168.1.200:7164  # The URL of your Gotify server
+GOTIFY_APP_ID=motogp-dl # The ID of your Gotify application
+GOTIFY_TOKEN=xxxxxxxxxxx # The token of your Gotify application
 ```
 
 ## Dependencies
