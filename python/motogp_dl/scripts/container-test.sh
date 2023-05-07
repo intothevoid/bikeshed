@@ -5,14 +5,10 @@
 # It will restart the container unless stopped and will also expose port 6911. 
 # It also creates a volume to store any downloads in the current directory.
 
-# create downloads directory if it doesn't exist, give it write permissions with existing user and group
-mkdir -p downloads
-chmod 777 downloads
-
 # run the container
 docker run --rm -it \
   --name motogp-dl \
   -p 6911:6911 -p 6881-6885:6881-6885 \
-  -v ./downloads:/downloads \
+  -v /volume1/downloads:/downloads \
   --env-file=./scripts/config.env \
   motogp-dl:latest
