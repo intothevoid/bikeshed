@@ -109,7 +109,7 @@ def parse_feed(latest: bool = True):
                         continue
 
                 # record magnet link to file as downloaded
-                with open("downloaded.txt", "a") as f:
+                with open(f"{DOWNLOAD_DIR}/downloaded.txt", "a") as f:
                     with contextlib.suppress(Exception):
                         f.write(f"{magnet_link}\n")
 
@@ -146,13 +146,13 @@ def already_downloaded(magnet_link: str) -> bool:
     to see if the link is in there. If it finds the link it will return True, otherwise it will
     return False. If the file does not exist it will skip it and return False."""
     try:
-        with open("downloaded.txt", "r") as f:
+        with open(f"{DOWNLOAD_DIR}/downloaded.txt", "r") as f:
             for line in f.readlines():
                 if magnet_link in line:
                     return True
     except FileNotFoundError:
         # create empty file if it doesn't exist
-        with open("downloaded.txt", "w") as f:
+        with open(f"{DOWNLOAD_DIR}/downloaded.txt", "w") as f:
             pass
 
     return False

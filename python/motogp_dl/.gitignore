@@ -1,5 +1,5 @@
 venv/
-downloads/
+downloads/*
 
 # python gitignore
 *.py[cod]

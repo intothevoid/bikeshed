@@ -19,7 +19,7 @@ class AlreadyDownloadedTest(unittest.TestCase):
     def test_already_downloaded_exists(self):
         # Setup
         magnet_link = "magnet:?xt=urn:btih:1234567890abcdef"
-        with open("downloaded.txt", "w") as f:
+        with open(f"{DOWNLOAD_DIR}/downloaded.txt", "w") as f:
             f.write(magnet_link)
 
         # Test
@@ -32,7 +32,7 @@ class AlreadyDownloadedTest(unittest.TestCase):
     def test_already_downloaded_not_exists(self):
         # Setup
         magnet_link = "magnet:?xt=urn:btih:1234567890abcdef"
-        with open("downloaded.txt", "w") as f:
+        with open(f"{DOWNLOAD_DIR}/downloaded.txt", "w") as f:
             f.write("magnet:?xt=urn:btih:0987654321fedcba")
 
         # Test
@@ -42,7 +42,7 @@ class AlreadyDownloadedTest(unittest.TestCase):
         assert result == False
 
     def tearDown(self) -> None:
-        os.remove("downloaded.txt")
+        os.remove(f"{DOWNLOAD_DIR}/downloaded.txt")
         return super().tearDown()
 
 
