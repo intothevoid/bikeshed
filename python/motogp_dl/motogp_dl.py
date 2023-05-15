@@ -33,12 +33,6 @@ try:
 except KeyError as exc:
     LOGGER.error(f"KeyError: {exc}")
 
-# Initialise feedparser load feed
-try:
-    FEED = feedparser.parse(FEEDURL)
-except Exception as exc:
-    LOGGER.error(f"Error parsing feed: {exc}")
-
 # Notification settings
 # If you wish to use gotify, you need to set the following environment variables:
 # GOTIFY_URL, GOTIFY_APP_ID and GOTIFY_TOKEN
@@ -59,10 +53,20 @@ def parse_feed(latest: bool = True):
         f"Searching for downloads of type(s): {DOWNLOAD_TYPES} - Quality: {QUALITY}"
     )
 
+    # Parse data using RSS library
+    try:
+        FEED = feedparser.parse(FEEDURL)
+    except Exception as exc:
+        LOGGER.error(f"Error parsing feed: {exc}")
+
     for entry in FEED.entries:
         LOGGER.info(f"Checking entry: {entry.title}")
-        if any(dl_type in entry.title.lower() for dl_type in DOWNLOAD_TYPES) and (
-            f"{QUALITY}" in entry.title.lower() or "hd" in entry.title.lower()
+        if any(
+            dl_type in entry.title.lower().replace(" ", "")
+            for dl_type in DOWNLOAD_TYPES
+        ) and (
+            f"{QUALITY}" in entry.title.lower().replace(" ", "")
+            or "hd" in entry.title.lower().replace(" ", "")
         ):
             # Extract magnet link from content
             match = re.search(r"magnet:\?xt=urn:btih:\w+", entry.content[0].value)
