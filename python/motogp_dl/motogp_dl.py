@@ -95,6 +95,7 @@ def parse_feed(latest: bool = True):
                     # process return code
                     if ret.returncode == 0:
                         LOGGER.info(f"Downloaded: {magnet_link}")
+                        send_notification(f"Downloaded: {entry.title}")
                     else:
                         send_notification(f"Error downloading: {magnet_link}")
                         LOGGER.error(f"Error downloading: {magnet_link}")
