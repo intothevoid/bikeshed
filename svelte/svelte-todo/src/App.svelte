@@ -25,6 +25,13 @@
 
 <div class="container mx-auto max-w-md py-10">
 	<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
+		<div>
+			<h2
+				class="px-10 py-10 flex justify-center text-4xl text-red-700 font-semibold"
+			>
+				Svelte Todo
+			</h2>
+		</div>
 		<div class="mb-4">
 			<label
 				class="block text-gray-800 text-sm font-bold mb-2"
@@ -41,8 +48,8 @@
 				on:keydown={(e) => e.key == "Enter" && addTodo()}
 			/>
 			<button
-				class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 on:click={addTodo}"
-				>Add</button
+				class="bg-blue-500 hover:bg-blue-700 text-white font-bold my-2 py-2 px-4"
+				on:click={addTodo}>Add</button
 			>
 		</div>
 		<div>
