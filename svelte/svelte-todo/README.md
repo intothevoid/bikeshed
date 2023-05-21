@@ -2,7 +2,7 @@
 
 This is a simple Todo application built using Svelte and Tailwind CSS.
 
-![Description of the image](./sshot-svelete-todo.png)
+<img src="./sshot-svelete-todo.png" alt="Screenshot of the application" width="300"/>
 
 ## Prerequisites
 
