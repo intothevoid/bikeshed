@@ -2,6 +2,8 @@
 
 This is a simple Todo application built using Svelte and Tailwind CSS.
 
+![Description of the image](./sshot-svelete-todo.png)
+
 ## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
