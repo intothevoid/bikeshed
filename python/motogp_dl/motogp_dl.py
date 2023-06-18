@@ -96,7 +96,7 @@ def parse_feed(latest: bool = True):
                     if ret.returncode == 0:
                         LOGGER.info(f"Downloaded: {magnet_link}")
                         send_notification(f"Downloaded: {entry.title}")
-                    if ret.returncode == 13 or ret.returncode == 11:
+                    elif ret.returncode == 13 or ret.returncode == 11:
                         LOGGER.info(f"File already exists or is being downloaded")
                         continue
                     else:
