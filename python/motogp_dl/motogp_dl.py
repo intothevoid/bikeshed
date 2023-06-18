@@ -129,6 +129,7 @@ def run_aria2c(magnet_link):
             "--listen-port",
             "6881-6885",
             "--disable-ipv6=true",
+            "--seed-time=0",
             "-d",
             f"{DOWNLOAD_DIR}",
             magnet_link,
