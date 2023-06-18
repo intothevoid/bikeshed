@@ -199,4 +199,5 @@ if __name__ == "__main__":
         except Exception as exc:
             LOGGER.error(f"Error parsing feed: {exc}")
             send_notification(f"Error parsing feed: {exc}")
+            sys.exit(1)
         time.sleep(60 * INTERVAL_MINS)  # interval in mins
