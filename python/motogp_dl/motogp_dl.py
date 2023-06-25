@@ -12,7 +12,7 @@ import feedparser
 import re
 import subprocess
 import time
-from notify.notify import send_notification
+from notify.notify import send_notification, init_notification
 from util.log import LOGGER
 from util.config import load_config
 
@@ -30,6 +30,8 @@ try:
     DELETE_OLD_FILES_THRESHOLD = (
         SETTINGS["DELETE_OLD_FILES_THRESHOLD"] or 10
     )  # example: 10
+    DOWNLOAD_PATTERN = r"|".join(DOWNLOAD_TYPES)
+    QUALITY_PATTERN = rf"{QUALITY}"
 except KeyError as exc:
     LOGGER.error(f"KeyError: {exc}")
 
@@ -61,12 +63,8 @@ def parse_feed(latest: bool = True):
 
     for entry in FEED.entries:
         LOGGER.info(f"Checking entry: {entry.title}")
-        if any(
-            dl_type in entry.title.lower().replace(" ", "")
-            for dl_type in DOWNLOAD_TYPES
-        ) and (
-            f"{QUALITY}" in entry.title.lower().replace(" ", "")
-            or "hd" in entry.title.lower().replace(" ", "")
+        if re.search(DOWNLOAD_PATTERN, entry.title, re.IGNORECASE) and re.search(
+            QUALITY_PATTERN, entry.title, re.IGNORECASE
         ):
             # Extract magnet link from content
             match = re.search(r"magnet:\?xt=urn:btih:\w+", entry.content[0].value)
@@ -193,6 +191,7 @@ def delete_oldest_file():
 if __name__ == "__main__":
     curr_date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     LOGGER.info(f"Starting MotoGP Downloader v1.0. Time: {curr_date}")
+    init_notification()
     send_notification(f"Starting MotoGP Downloader v1.0. Time: {curr_date}")
 
     # check feed every INTERVAL_MINS minutes

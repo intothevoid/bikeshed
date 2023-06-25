@@ -26,7 +26,7 @@ APR_GOTIFY = "gotify://" + GOTIFY_URL + "/" + GOTIFY_TOKEN
 APR_TELEGRAM = "tgram://" + TELEGRAM_TOKEN + "/" + TELEGRAM_CHAT_ID + "/"
 
 
-def send_notification(message: str, title: str = "motogp-dl"):
+def init_notification():
     try:
         if SETTINGS["ENABLE_NOTIFICATIONS"]:
             if "gotify" in SETTINGS["NOTIFICATION_TYPES"]:
@@ -43,8 +43,13 @@ def send_notification(message: str, title: str = "motogp-dl"):
                     LOGGER.error(
                         "TELEGRAM_TOKEN and TELEGRAM_CHAT_ID settings must be set to use telegram notifications"
                     )
+    except Exception as exc:
+        LOGGER.error(f"Error initialising notification system: {exc}")
 
-            # Send notification
-            APR.notify(body=message, title=title)
+
+def send_notification(message: str, title: str = "motogp-dl"):
+    try:
+        # Send notification
+        APR.notify(body=message, title=title)
     except Exception as exc:
         LOGGER.error(f"Send notification error: {exc}")
