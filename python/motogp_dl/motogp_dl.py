@@ -96,7 +96,10 @@ def parse_feed(latest: bool = True):
                         send_notification(f"Downloaded: {entry.title}")
                     elif ret.returncode == 13 or ret.returncode == 11:
                         LOGGER.info(f"File already exists or is being downloaded")
-                        continue
+                        if latest:
+                            break
+                        else:
+                            continue
                     else:
                         send_notification(f"Error downloading: {magnet_link}")
                         LOGGER.error(f"Error downloading: {magnet_link}")
@@ -117,6 +120,9 @@ def parse_feed(latest: bool = True):
                 # break out if we have downloaded the latest
                 if latest:
                     break
+
+                # avoid tightloop
+                time.sleep(1)
 
 
 def run_aria2c(magnet_link):
