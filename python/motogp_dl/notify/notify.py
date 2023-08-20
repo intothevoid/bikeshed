@@ -18,8 +18,10 @@ def get_env_var(var: str):
 # Read settings
 GOTIFY_URL = SETTINGS["GOTIFY_URL"] or get_env_var("GOTIFY_URL") or "localhost"
 GOTIFY_TOKEN = SETTINGS["GOTIFY_TOKEN"] or get_env_var("GOTIFY_TOKEN") or ""
-TELEGRAM_TOKEN = SETTINGS["TELEGRAM_TOKEN"] or get_env_var("TELEGRAM_TOKEN") or ""
-TELEGRAM_CHAT_ID = SETTINGS["TELEGRAM_CHAT_ID"] or get_env_var("TELEGRAM_CHAT_ID") or ""
+TELEGRAM_TOKEN = SETTINGS["TELEGRAM_TOKEN"] or get_env_var("MSR_TELEGRAM_BOT") or ""
+TELEGRAM_CHAT_ID = (
+    SETTINGS["TELEGRAM_CHAT_ID"] or get_env_var("MSR_TELEGRAM_USER") or ""
+)
 
 APR = apprise.Apprise()
 APR_GOTIFY = "gotify://" + GOTIFY_URL + "/" + GOTIFY_TOKEN

@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import date
 
 # Add the root folder to the module search path
 root_folder = os.path.dirname(os.path.abspath(__file__))
@@ -17,6 +18,10 @@ from util.log import LOGGER
 from util.config import load_config
 from util.validity import check_valid_dl_type
 
+# Global variable to store the count of downloads
+download_count = 0
+last_download_date = date.today()
+
 # Settings
 try:
     SETTINGS = load_config()
@@ -27,6 +32,7 @@ try:
     DELETE_OLD_FILES_THRESHOLD = (
         SETTINGS["DELETE_OLD_FILES_THRESHOLD"] or 10
     )  # example: 10
+    MAX_DOWNLOADS_PER_DAY = SETTINGS["MAX_DOWNLOADS_PER_DAY"] or 1  # example: 1
 
 except KeyError as exc:
     LOGGER.error(f"KeyError: {exc}")
@@ -47,6 +53,8 @@ def parse_feed(latest: bool = True):
      Returns:
         None
     """
+    global download_count
+
     LOGGER.info(
         f"Filters set - POSITIVE_FILTERS: {SETTINGS['POSITIVE_FILTERS']}, NEGATIVE_FILTERS: {SETTINGS['NEGATIVE_FILTERS']}"
     )
@@ -74,6 +82,12 @@ def parse_feed(latest: bool = True):
                     LOGGER.info(f"Already downloaded - skipping: {magnet_link}")
                     continue
 
+                if max_downloads_per_day_reached(MAX_DOWNLOADS_PER_DAY):
+                    LOGGER.info(
+                        f"Max downloads per day reached - skipping: {magnet_link}"
+                    )
+                    continue
+
                 # Send notification
                 send_notification(f"Found new video: {entry.title} - {magnet_link}")
 
@@ -92,6 +106,7 @@ def parse_feed(latest: bool = True):
                     if ret.returncode == 0:
                         LOGGER.info(f"Downloaded: {magnet_link}")
                         send_notification(f"Downloaded: {entry.title}")
+                        download_count += 1
                     elif ret.returncode == 13 or ret.returncode == 11:
                         LOGGER.info(f"File already exists or is being downloaded")
                         if latest:
@@ -189,6 +204,22 @@ def delete_oldest_file():
 
     # delete oldest file
     subprocess.run(["rm", f"{DOWNLOAD_DIR}/{oldest_file}"])
+
+
+def max_downloads_per_day_reached(max_downloads: int) -> bool:
+    global download_count
+    global last_download_date
+
+    # Check if the date has changed since the last download
+    if date.today() != last_download_date:
+        # If the date has changed, reset the download count and update the last download date
+        download_count = 0
+        last_download_date = date.today()
+
+    if download_count >= max_downloads:
+        return True
+    else:
+        return False
 
 
 # Call parse_feed() every INTERVAL_MINS minutes
