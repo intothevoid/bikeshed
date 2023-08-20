@@ -15,23 +15,19 @@ import time
 from notify.notify import send_notification, init_notification
 from util.log import LOGGER
 from util.config import load_config
+from util.validity import check_valid_dl_type
 
 # Settings
 try:
     SETTINGS = load_config()
     FEEDURL = SETTINGS["FEED"] or "https://www.reddit.com/r/MotorsportsReplays.rss"
-    DOWNLOAD_TYPES = SETTINGS["DOWNLOAD_TYPES"] or [
-        "motogp"
-    ]  # example: ["motogp", "formula 1"]
     DOWNLOAD_DIR = SETTINGS["DOWNLOAD_DIR"] or "./downloads"
-    QUALITY = SETTINGS["QUALITY"] or "1080"  # example: "1080p"
     INTERVAL_MINS = SETTINGS["INTERVAL_MINS"] or 60  # example: 5
     DELETE_OLD_FILES = SETTINGS["DELETE_OLD_FILES"] or True  # example: True
     DELETE_OLD_FILES_THRESHOLD = (
         SETTINGS["DELETE_OLD_FILES_THRESHOLD"] or 10
     )  # example: 10
-    DOWNLOAD_PATTERN = r"|".join(DOWNLOAD_TYPES)
-    QUALITY_PATTERN = rf"{QUALITY}"
+
 except KeyError as exc:
     LOGGER.error(f"KeyError: {exc}")
 
@@ -43,7 +39,7 @@ except KeyError as exc:
 # Iterate over the entries and extract magnet links
 def parse_feed(latest: bool = True):
     """This function parses the RSS feed and downloads the torrents.
-    It looks for titles with 'motogp' and the specified quality or 'HD'.
+    It looks for titles using positive and negative filters.
     It checks if the torrent has already been downloaded and skips it if so.
     It then downloads the torrent using aria2 and adds the torrent to the downloaded.txt file.
      Args:
@@ -52,7 +48,7 @@ def parse_feed(latest: bool = True):
         None
     """
     LOGGER.info(
-        f"Searching for downloads of type(s): {DOWNLOAD_TYPES} - Quality: {QUALITY}"
+        f"Filters set - POSITIVE_FILTERS: {SETTINGS['POSITIVE_FILTERS']}, NEGATIVE_FILTERS: {SETTINGS['NEGATIVE_FILTERS']}"
     )
 
     # Parse data using RSS library
@@ -63,9 +59,11 @@ def parse_feed(latest: bool = True):
 
     for entry in FEED.entries:
         LOGGER.info(f"Checking entry: {entry.title}")
-        if re.search(DOWNLOAD_PATTERN, entry.title, re.IGNORECASE) and re.search(
-            QUALITY_PATTERN, entry.title, re.IGNORECASE
-        ):
+
+        # Check if entry is valid
+        isTitleValid: bool = check_valid_dl_type(entry.title, SETTINGS)
+
+        if isTitleValid:
             # Extract magnet link from content
             match = re.search(r"magnet:\?xt=urn:btih:\w+", entry.content[0].value)
             if match:

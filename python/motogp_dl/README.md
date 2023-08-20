@@ -31,9 +31,9 @@ This will start the container and run the Python script.
 The script can be configured by changing the values of the following variables in the `config.yaml` file. Some of these can also be set as environment variables in the `config.env` file, for added security.
 ```
 FEED - The URL of the RSS feed to check for new posts
-DOWNLOAD_TYPES - example: ["motogp", "formula 1"]. The script will only download videos that match one of these keywords in post titles.
+POSITIVE_FILTERS - example: ["motogp", "formula 1"]. The script will only download videos that match one of these keywords in post titles.
+NEGATIVE_FILTERS - example: ["practice", "request"]. The script will not download videos that match any of these keywords in post titles.
 DOWNLOAD_DIR - The directory where the videos will be downloaded to.
-QUALITY - ex. "1080" or "720". The script will only download videos that match this quality in the title.
 INTERVAL_MINS - Interval in minutes between each check for new posts. Integer value in mins.
 DELETE_OLD_FILES - If set to True, the script will delete old videos if the disk is under threshold value described below.
 DELETE_OLD_FILES_THRESHOLD - The minimum amount of free disk space in GB. If the disk is under this threshold, the script will delete old videos. Integer value in GB.
