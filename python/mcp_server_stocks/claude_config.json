@@ -6,19 +6,13 @@
       ]
     },
     "mcpServers": {
-      "desktop-commander": {
-        "command": "npx",
-        "args": [
-          "@wonderwhy-er/desktop-commander@latest"
-        ]
-      },
       "stock_price_server": {
-        "command": "/Users/bindok/bikeshed/github/bikeshed/python/mcp_server_stocks/venv/bin/python",
+        "command": "python",
         "args": [
-          "/Users/bindok/bikeshed/github/bikeshed/python/mcp_server_stocks/mcp_server.py"
+          "mcp_server.py"
         ],
         "env": {
-          "FLASK_APP": "/Users/bindok/bikeshed/github/bikeshed/python/mcp_server_stocks/mcp_server.py",
+          "FLASK_APP": "mcp_server.py",
           "FLASK_ENV": "production",
           "PORT": "8081"
         }
